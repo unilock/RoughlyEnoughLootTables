@@ -8,19 +8,18 @@ val fabricVersion: String by project
 val fabricKotlinVersion: String by project
 val javaVersion = JavaVersion.VERSION_17
 val reiVersion: String by project
-
+val modmenuVersion: String by project
 
 plugins {
     id("fabric-loom")
     val kotlinVersion: String by System.getProperties()
     kotlin("jvm").version(kotlinVersion)
 }
+
 base {
     val archivesBaseName: String by project
     archivesName.set(archivesBaseName)
 }
-
-
 
 version = modVersion
 group = mavenGroup
@@ -49,15 +48,14 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${fabricKotlinVersion}")
 
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api:$reiVersion")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:$reiVersion")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:$reiVersion")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$reiVersion")
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:$reiVersion")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api:${reiVersion}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${reiVersion}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${reiVersion}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${reiVersion}")
+    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}")
 
-    modRuntimeOnly("curse.maven:modmenu-308702:3789482")
+    modRuntimeOnly("curse.maven:modmenu-308702:${modmenuVersion}")
 }
-
 
 tasks {
     withType<JavaCompile> {
@@ -78,5 +76,4 @@ tasks {
         targetCompatibility = javaVersion
         withSourcesJar()
     }
-
 }
