@@ -1,6 +1,5 @@
 package griglog.relt.rei_plugin
 
-import com.mojang.blaze3d.vertex.PoseStack
 import griglog.relt.RELT
 import griglog.relt.table_storage.openTableJson
 import me.shedaniel.clothconfig2.ClothConfigInitializer
@@ -16,6 +15,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory
 import me.shedaniel.rei.api.common.category.CategoryIdentifier
 import me.shedaniel.rei.api.common.entry.EntryIngredient
 import me.shedaniel.rei.api.common.entry.EntryStack
+import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.events.GuiEventListener
 import net.minecraft.network.chat.Component
 import net.minecraft.util.Mth
@@ -103,10 +103,10 @@ class ScrollableSlotsWidget : WidgetWithBounds {
                 || super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
 
 
-    override fun render(matrices: PoseStack, mouseX: Int, mouseY: Int, delta: Float) {
+    override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
         scrolling.updatePosition(delta)
         val innerBounds = scrolling.scissorBounds
-        scissor(matrices, innerBounds).use { scissors ->
+        scissor(graphics, innerBounds).use { scissors ->
             for (y in 0 until Mth.ceil(widgets.size / 8f)) {
                 for (x in 0..7) {
                     val index = y * 8 + x
@@ -114,12 +114,13 @@ class ScrollableSlotsWidget : WidgetWithBounds {
                         return@use
                     val widget = widgets[index]
                     widget.bounds.setLocation(bounds.x + 1 + x * 18, bounds.y + 1 + y * 18 - scrolling.scrollAmountInt())
-                    widget.render(matrices, mouseX, mouseY, delta)
+                    widget.render(graphics, mouseX, mouseY, delta)
                 }
             }
         }
-        scissor(matrices, scrolling.bounds).use { scissors ->
+        scissor(graphics, scrolling.bounds).use { scissors ->
             scrolling.renderScrollBar(
+                graphics,
                 -0x1000000,
                 1f,
                 if (REIRuntime.getInstance().isDarkThemeEnabled) 0.8f else 1f

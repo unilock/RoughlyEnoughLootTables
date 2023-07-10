@@ -3,8 +3,8 @@ package griglog.relt.table_storage
 import com.google.gson.JsonParser
 import griglog.relt.RELT
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.storage.loot.LootDataType
 import net.minecraft.world.level.storage.loot.LootTable
-import net.minecraft.world.level.storage.loot.LootTables
 import org.apache.commons.lang3.SystemUtils
 import java.awt.Desktop
 import java.io.ByteArrayInputStream
@@ -18,11 +18,12 @@ fun recieveLootTables(compressed: ByteArray){
     ByteArrayInputStream(compressed).use{
         GZIPInputStream(it).apply{ bytes = readAllBytes(); close() }
     }
+    val gson = LootDataType.TABLE.parser()
     val json = JsonParser.parseString(String(bytes))
     clientTables.clear()
     json.asJsonObject.entrySet().forEach {(key, value) ->
         val rl = ResourceLocation(key)
-        val table = LootTables.GSON.fromJson(value, LootTable::class.java)
+        val table = gson.fromJson(value, LootTable::class.java)
         clientTables.put(rl, table)
     }
     val t2 = System.nanoTime()
@@ -32,7 +33,7 @@ fun recieveLootTables(compressed: ByteArray){
 
 fun openTableJson(name: ResourceLocation){
     val table = clientTables.get(name) ?: return
-    val json = LootTables.GSON.newBuilder().setPrettyPrinting().create().toJson(table)
+    val json = LootDataType.TABLE.parser().newBuilder().setPrettyPrinting().create().toJson(table)
     val temp = File.createTempFile("RELT_" + name.toString().replace(':', '_').replace('/', '_'), ".json")
     temp.writeText(json.toString(), Charsets.UTF_8)
 

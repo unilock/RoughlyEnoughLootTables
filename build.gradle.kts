@@ -29,10 +29,9 @@ loom {
 }
 
 repositories {
-    maven("https://www.cursemaven.com")
-    maven("https://maven.shedaniel.me/")
-    maven("https://maven.architectury.dev/")
     maven("https://maven.parchmentmc.org")
+    maven("https://maven.shedaniel.me/")
+    maven("https://maven.terraformersmc.com")
 }
 
 dependencies {
@@ -48,13 +47,11 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${fabricKotlinVersion}")
 
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api:${reiVersion}")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${reiVersion}")
+    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${reiVersion}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${reiVersion}")
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}")
 
-    modRuntimeOnly("curse.maven:modmenu-308702:${modmenuVersion}")
+    modRuntimeOnly("com.terraformersmc:modmenu:${modmenuVersion}")
 }
 
 tasks {

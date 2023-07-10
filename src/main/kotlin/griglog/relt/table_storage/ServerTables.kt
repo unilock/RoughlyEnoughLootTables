@@ -3,7 +3,7 @@ package griglog.relt.table_storage
 import com.google.gson.JsonObject
 import griglog.relt.RELT
 import net.minecraft.server.MinecraftServer
-import net.minecraft.world.level.storage.loot.LootTables
+import net.minecraft.world.level.storage.loot.LootDataType
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.*
 import org.apache.commons.lang3.ArrayUtils
@@ -16,12 +16,15 @@ private val skipTypes = setOf(BLOCK, ENTITY, COMMAND)
 fun tryUpdateLootTables(server: MinecraftServer) {
     if (serverCacheValid)
         return
+    val gson = LootDataType.TABLE.parser()
+    val lootDataManager = server.lootData
     val obj = JsonObject()
-    server.lootTables.tables.forEach { rl, table ->
+    lootDataManager.getKeys(LootDataType.TABLE).forEach { rl ->
+        val table = lootDataManager.getLootTable(rl)
         val type = LootContextParamSets.getKey(table.paramSet)
         if (table.paramSet in skipTypes)
             return@forEach
-        val json = LootTables.GSON.toJsonTree(table)
+        val json = gson.toJsonTree(table)
         obj.add(rl.toString(), json)
     }
     /*

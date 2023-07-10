@@ -1,7 +1,6 @@
 package griglog.relt.rei_plugin
 
 import com.mojang.blaze3d.systems.RenderSystem
-import com.mojang.blaze3d.vertex.PoseStack
 import griglog.relt.RELT
 import me.shedaniel.math.Rectangle
 import me.shedaniel.rei.api.client.entry.renderer.EntryRenderer
@@ -14,7 +13,7 @@ import me.shedaniel.rei.api.common.entry.comparison.ComparisonContext
 import me.shedaniel.rei.api.common.entry.type.EntryDefinition
 import me.shedaniel.rei.api.common.entry.type.EntryType
 import me.shedaniel.rei.api.common.util.EntryIngredients
-import net.minecraft.client.gui.GuiComponent
+import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -88,9 +87,9 @@ class TableEntryDef: EntryDefinition<ResourceLocation>{
             val textureMany = ResourceLocation(RELT.id, "icons.png")
         }
 
-        override fun render(entry: EntryStack<ResourceLocation>, matrices: PoseStack, bounds: Rectangle, mouseX: Int, mouseY: Int, delta: Float) {
+        override fun render(entry: EntryStack<ResourceLocation>, graphics: GuiGraphics, bounds: Rectangle, mouseX: Int, mouseY: Int, delta: Float) {
             RenderSystem.setShaderTexture(0, if (entry.value == rootId) textureMany else textureSingle)
-            GuiComponent.blit(matrices, bounds.x, bounds.y, 0f, 0f, 16, 16, 16, 16)
+            graphics.blit(entry.value, bounds.x, bounds.y, 0f, 0f, 16, 16, 16, 16)
         }
 
         override fun getTooltip(estack: EntryStack<ResourceLocation>, context: TooltipContext): Tooltip? =
