@@ -21,7 +21,7 @@ base {
     archivesName.set(archivesBaseName)
 }
 
-version = modVersion
+version = "${modVersion}+${minecraftVersion}"
 group = mavenGroup
 
 loom {

@@ -26,13 +26,12 @@
   },
   "accessWidener" : "roughly_enough_loot_tables.accesswidener",
   "depends": {
-    "java": ">=17",
     "minecraft": ">=1.20.1",
     "fabricloader": "*",
     "fabric-api": "*",
     "fabric-language-kotlin": ">=1.9.4+kotlin.1.8.21"
   },
   "suggests": {
-    "roughlyenoughitems": ">=12.0"
+    "roughlyenoughitems": ">=12.0.0"
   }
 }
